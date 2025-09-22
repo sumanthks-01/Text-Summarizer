@@ -1,0 +1,6 @@
+nltk
+scikit-learn
+networkx
+numpy
+PyPDF2
+langdetect

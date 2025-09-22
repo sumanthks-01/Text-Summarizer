@@ -18,6 +18,11 @@
 - **📝 Normal Mode** - Standard extractive text summarization
 - **📚 Topics Mode** - Intelligent topic-based summarization for structured documents
 
+### 🌍 **Multilingual Support**
+- **30+ Languages** - Automatic language detection and processing
+- **Regional Scripts** - Arabic, Hindi, Chinese, Japanese, Korean, Cyrillic
+- **Smart Tokenization** - Language-appropriate text processing
+
 ### 📄 **Multi-Format Support**
 - **PDF Files** - Extract and summarize PDF documents, notes, and research papers
 - **Text Files** - Process .txt files and plain text input
@@ -30,6 +35,7 @@
 - **Responsive Design** - Adapts to different screen sizes
 
 ### ⚙️ **Advanced Controls**
+- **Language Selection** - Auto-detect or manually select language
 - **Customizable Length** - Adjust summary from 1-20 sentences
 - **Progress Tracking** - Visual progress bar for long documents
 - **File Operations** - Load, save, copy, and clear functions
@@ -69,6 +75,9 @@ python text_summarizer_app.py
 # Summarize from file
 python cli_app.py -f document.txt -n 5 -o summary.txt
 
+# Summarize with specific language
+python cli_app.py -f document.txt -l es -n 5
+
 # Summarize from stdin
 python cli_app.py -n 3
 
@@ -80,8 +89,13 @@ python cli_app.py -h
 ```python
 from Summarize_Text import summarize_text
 
+# Auto-detect language
 text = "Your long text here..."
 summary = summarize_text(text, num_sentences=5)
+print(summary)
+
+# Specify language
+summary = summarize_text(text, num_sentences=5, language='es')
 print(summary)
 ```
 
@@ -113,6 +127,7 @@ print(summary)
 - **Text Area** - Direct text input with syntax highlighting
 
 ### **⚙️ Settings & Controls**
+- **Language Selector** - Auto-detect or choose from 30+ languages
 - **Mode Selector** - Choose between normal/topics summarization
 - **Length Control** - Adjust summary length (1-20 sentences)
 - **✨ Generate Summary** - Process text with visual progress
@@ -147,12 +162,20 @@ Text Summerizer/
 - **scikit-learn** - Machine learning algorithms
 - **NetworkX** - Graph algorithms for PageRank
 - **PyPDF2** - PDF text extraction
+- **langdetect** - Automatic language detection
+- **polyglot** - Advanced multilingual text processing
 - **Tkinter** - GUI framework (built-in)
+
+### **Supported Languages**
+- **European**: English, Spanish, French, German, Italian, Portuguese, Dutch, Swedish, Danish, Norwegian, Finnish, Russian, Polish, Czech, Hungarian, Romanian, Bulgarian, Croatian, Slovak, Slovene, Estonian, Latvian, Lithuanian, Maltese, Irish, Welsh, Greek, Turkish
+- **Asian**: Chinese, Japanese, Korean, Hindi, Arabic, Persian, Urdu, Thai, Vietnamese
+- **Indian Regional**: Kannada, Telugu, Tamil, Malayalam, Bengali, Gujarati, Punjabi, Oriya
+- **Auto-Detection**: Automatic language identification for seamless processing
 
 ### **Supported Formats**
 - **Input**: PDF, TXT, Direct text
 - **Output**: Plain text, Formatted summaries
-- **Encoding**: UTF-8 support
+- **Encoding**: UTF-8 support with full Unicode compatibility
 
 ### **Performance**
 - **Speed**: Optimized for documents up to 10,000+ words
@@ -193,11 +216,36 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🌍 Multilingual Features
+
+### **Automatic Language Detection**
+- Detects language automatically from input text
+- Supports 30+ languages with high accuracy
+- Fallback to English for unsupported languages
+
+### **Language-Specific Processing**
+- **Script-aware cleaning**: Handles Arabic, Devanagari, Chinese, Japanese, Korean, Cyrillic, and Greek scripts
+- **Smart tokenization**: Uses appropriate tokenizers for each language family
+- **Localized stopwords**: Removes language-specific common words
+
+### **Supported Language Families**
+- **Latin-based**: English, Spanish, French, German, Italian, Portuguese, Dutch, etc.
+- **Cyrillic**: Russian, Bulgarian, Serbian, etc.
+- **Arabic script**: Arabic, Persian, Urdu
+- **Devanagari**: Hindi, Nepali, Marathi
+- **Indian Scripts**: Kannada, Telugu, Tamil, Malayalam, Bengali, Gujarati, Punjabi, Oriya
+- **East Asian**: Chinese, Japanese, Korean
+- **Others**: Greek, Turkish, Thai, Vietnamese
+
+---
+
 ## 🙏 Acknowledgments
 
 - **NLTK Team** - Natural Language Toolkit
 - **scikit-learn** - Machine Learning Library
 - **NetworkX** - Graph Analysis Library
+- **langdetect** - Language Detection Library
+- **polyglot** - Multilingual NLP Library
 - **Python Community** - For excellent documentation and support
 
 ---

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox, filedialog
-from Summarize_Text import summarize_text
+from Summarize_Text import summarize_text, detect_language, LANGUAGE_MAPPINGS
 import threading
 import re
 import PyPDF2
@@ -125,6 +125,24 @@ class TextSummarizerApp:
         # Settings content
         settings_content = tk.Frame(controls_frame, bg=self.colors['bg_secondary'])
         settings_content.pack(fill=tk.X, padx=15, pady=15)
+        
+        # Language selection
+        lang_label = tk.Label(settings_content, 
+                             text="Language:",
+                             font=("Segoe UI", 11),
+                             bg=self.colors['bg_secondary'],
+                             fg=self.colors['text_primary'])
+        lang_label.pack(side=tk.LEFT)
+        
+        self.language_mode = tk.StringVar(value="auto")
+        lang_options = ["auto"] + list(LANGUAGE_MAPPINGS.keys())
+        lang_combo = ttk.Combobox(settings_content, 
+                                 textvariable=self.language_mode,
+                                 values=lang_options,
+                                 state="readonly",
+                                 width=6,
+                                 font=("Segoe UI", 10))
+        lang_combo.pack(side=tk.LEFT, padx=(10, 15))
         
         # Summary mode
         mode_label = tk.Label(settings_content, 
@@ -327,25 +345,31 @@ class TextSummarizerApp:
         
         try:
             mode = self.summary_mode.get()
+            language = self.language_mode.get() if self.language_mode.get() != "auto" else None
+            
+            # Detect and display language
+            detected_lang = detect_language(input_text) if language is None else language
+            lang_name = LANGUAGE_MAPPINGS.get(detected_lang, detected_lang)
+            self.root.after(0, lambda: self.update_status(f"Processing in {lang_name}...", 'info'))
             
             if mode == "topics":
                 # Topic-based summarization
                 topics = self.extract_topics(input_text)
                 if not topics:
                     summary = "No clear topics found. Using normal summarization.\n\n"
-                    summary += summarize_text(input_text, self.num_sentences.get())
+                    summary += summarize_text(input_text, self.num_sentences.get(), language)
                 else:
                     summary = f"📚 TOPIC-BASED SUMMARY ({len(topics)} topics found)\n"
                     summary += "=" * 60 + "\n\n"
                     
                     for i, (heading, content) in enumerate(topics, 1):
-                        topic_summary = summarize_text(content, max(2, self.num_sentences.get() // len(topics)))
+                        topic_summary = summarize_text(content, max(2, self.num_sentences.get() // len(topics)), language)
                         summary += f"{i}. {heading}\n"
                         summary += "-" * 40 + "\n"
                         summary += f"{topic_summary}\n\n"
             else:
                 # Normal summarization
-                summary = summarize_text(input_text, self.num_sentences.get())
+                summary = summarize_text(input_text, self.num_sentences.get(), language)
             
             # Update output
             self.root.after(0, lambda: self.update_summary(summary))
